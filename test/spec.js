@@ -8,8 +8,8 @@
         beforeEach(function () {
             openBrowser();
         });
-        it('should have a title', function () {
-            expect(browser.getTitle()).toEqual('Protractor Demo');
+        it('should have correct title', function () {
+            expect(browser.getTitle()).toEqual('Credit Card');
         });
         it('input box should be disabled',function(){
            expect(element(by.id('hasCard')).isEnabled()).toBe(false);
