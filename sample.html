@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="creditCardApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Protractor Demo</title>
+    <link href="appStyle.css" rel="stylesheet">
+</head>
+<body ng-controller="CardController">
+<div>
+    <p>Do you have a credit card?</p>
+    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard" ng-click="checkClicked()">
+    <span>{{data.checkCard}}</span>
+</div>
+<div>
+    <p>If yes, please enter your credit card number here:</p>
+    <input type="text" name="myField" id="hasCard" ng-disabled="data.checkCard!='Yes'" ng-model="data.cardNumber" minlength="16" maxlength="16" required>
+    <input type="button" value="Save" id="save" ng-click="alert(data.cardNumber);">
+</div>
+</br>
+<div class="error" ng-if="!successMessage">
+{{errorMessage}}
+</div>
+<div class="success" ng-if="!errorMessage">
+{{successMessage}}
+</div>
+<script src="angular.min.js"></script>
+<script src="appController.js"></script>
+</body>
+</html>
