@@ -1,7 +1,7 @@
 (function () {
 
     function openBrowser() {
-        browser.get("http://localhost:63342/E2E-testing-with-Protractor/sample.html");
+        browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
     }
 
     describe('Book-Search', function () {
