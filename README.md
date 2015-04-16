@@ -154,7 +154,7 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
        function openBrowser() {
            browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
        }
-       describe('Book-Search', function () {
+       describe('Saving Credit Card Details', function () {
            beforeEach(function () {
                openBrowser();
            });
