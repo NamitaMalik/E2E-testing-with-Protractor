@@ -8,23 +8,22 @@ There are a hell lot of **automation** frameworks available but for **AngularJS*
 
 Now, its time to get our hands dirty with some piece of code, but before that let's have a look at some pre-requisites:
 
-1. Setting up Protractor on your system(I am assuming that **NodeJS** is installed on your system)
-  1. Install protractor globally using the command  ```npm install –g protractor``` or use the command ```npm install protractor``` if you want to install it for a particular project.
+Let's set up **Protractor** on your system(I am assuming that **NodeJS** is installed on your system)
+  1. Install **Protractor** globally using the command  ```npm install –g protractor``` or use the command ```npm install protractor``` if you want to install it for a particular project.
   2. To check if you have correctly installed it, use the command ```protractor --version```.
 
 Yes, it's that easy!!
 
 Now, let's have a look at the functionality that we want to test:
 
-a. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".
-b. When the checkbox is un-checked, credit card number input field would be disabled and on checking it, input field will be enabled.
-c. There is Save button also. On clicking the Save button error/success message is displayed.
-d. Error message would be displayed in the following conditions:
-
+1. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No"
+2. When the checkbox is un-checked, credit card number input field would be disabled and on checking it, input field will be enabled
+3. There is Save button also. On clicking the Save button error/success message is displayed
+4. Error message would be displayed in the following conditions
     1. When input field is empty.
     2. When anything except numbers is input in the input field.
     3. When less than 16 digits are added in the input field.
-e. Success Message would be shown in the following cases:
+5. Success Message would be shown in the following cases
     1. When a 16-digit number is input in the input field.
     2. Success message would also include the 16-digit number added in the input field.
 
@@ -95,11 +94,11 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
       specs: ['spec.js']
   };
   ```
-  Now, let's check with the help of **protractor** if this functionality works as per the mentioned specs.
+  Now, let's check with the help of **Protractor** if this functionality works as per the mentioned specs.
 
     Test Case 1 : First let's check if the title of the page is "Credit Card" or not.
 
-  I had mentioned above that **protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand:
+  I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand:
 
   ```
      it('should have correct title', function () {
@@ -194,7 +193,7 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
    To run these test you will have to do the following:
 
    1. Go to console and run webdriver-manager star command.
-   2. On the console go the test folder and run the command protractor conf.js
+   2. On the console go the test folder and run the command **Protractor** conf.js
 
    You will see a **Chrome** window opening up and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console.
 
@@ -208,4 +207,4 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
 
    In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper functions:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
 
-   Well, now we can now test our **application** using **protractor**, meanwhile you can also checkout full working source code from here.
+   Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from here.
