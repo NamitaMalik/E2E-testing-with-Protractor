@@ -1,36 +1,36 @@
-# E2E-testing-with-Protractor
+# E2E Testing with Protractor
 
-We all know that end to end testing is done to test the flow of application. It can either be done manually or using some kind of automation tool/framework.
+We all know that **end to end testings** is done to test the flow of **application**. It can either be done manually or using some kind of **automation** tool/framework.
 
-There are a hell lot of automation frameworks available but for **AngularJS**, **Protractor** is being promoted. **Protractor** combines powerful tools and technologies such as **NodeJS** , **Selenium Webdriver**, **Jasmine** , **Mocha** and **Cucumber**.
+There are a hell lot of **automation** frameworks available but for **AngularJS**, **Protractor** is being promoted. **Protractor** combines powerful tools and technologies such as **NodeJS**, **Selenium Webdriver**, **Jasmine**, **Mocha** and **Cucumber**.
 
-Note: **Protractor** was designed for **e2e testing** in order to cover the **acceptance criteria**. It does not replace the **unit testing** frameworks such as **Karma**. It is a sort of wrapper above **Selenium**.
+> NOTE: **Protractor** was designed for **e2e testing** in order to cover the **acceptance criteria**. It does not replace the **unit testing** frameworks such as **Karma**. It is a sort of wrapper above **Selenium**.
 
 Now, its time to get our hands dirty with some piece of code, but before that let's have a look at some pre-requisites:
 
-  1. Setting up Protractor on your system(I am assuming that node is installed on your system):
+1. Setting up Protractor on your system(I am assuming that **NodeJS** is installed on your system)
+  1. Install protractor globally using the command  ```npm install –g protractor``` or use the command ```npm install protractor``` if you want to install it for a particular project.
+  2. To check if you have correctly installed it, use the command ```protractor --version```.
 
-    a. Install protractor globally using the command  ```npm install –g protractor``` or use the command ```npm install protractor``` if you want to install it for a particular project.
-    b. To check if you have correctly installed it, use the command ```protractor --version```.
+Yes, it's that easy!!
 
-  Yes, it's that easy!!
+Now, let's have a look at the functionality that we want to test:
 
-  Now, let's have a look at the functionality that we want to test:
+a. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".
+b. When the checkbox is un-checked, credit card number input field would be disabled and on checking it, input field will be enabled.
+c. There is Save button also. On clicking the Save button error/success message is displayed.
+d. Error message would be displayed in the following conditions:
 
-  a. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".
-  b. When the checkbox is un-checked, credit card number input field would be disabled and on checking it, input field will be enabled.
-  c. There is Save button also. On clicking the Save button error/success message is displayed.
-  d. Error message would be displayed in the following conditions:
     1. When input field is empty.
     2. When anything except numbers is input in the input field.
     3. When less than 16 digits are added in the input field.
-  e. Success Message would be shown in the following cases:
+e. Success Message would be shown in the following cases:
     1. When a 16-digit number is input in the input field.
     2. Success message would also include the 16-digit number added in the input field.
 
-  Here is the HTML and JavaScript code:
+Here is the HTML and JavaScript code:
 
-  ```HTML
+```HTML
 <!DOCTYPE html>
 <html ng-app="creditCardApp">
 <head lang="en">
@@ -83,7 +83,7 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
     };
 }]);
 ```
-  First, we need to open our application, which we can do by : ``` browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");```
+  First, we need to open our **application**, which we can do by : ``` browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");```
   We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
 
 
@@ -112,7 +112,7 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
    1. String - This string is a kind of sentence, that explains what is being tested.
    2. function - This is a callback function
 
-   We write all the code in the **it** block that we need for testing. Usually the tests are started by writing an **expect** function.
+   We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** function.
 
    So we expect our page title to be(to be equal to) "Credit Card". So we are first getting the title using ```getTitle()``` function and then comparing with the expected title using the ```toEqual``` function.
 
@@ -208,4 +208,4 @@ creditCardApp.controller('CardController', ['$scope', function($scope) {
 
    In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper functions:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
 
-   Well, now we can now test our application using **protractor**, meanwhile you can also checkout full working source code from here.
+   Well, now we can now test our **application** using **protractor**, meanwhile you can also checkout full working source code from here.
