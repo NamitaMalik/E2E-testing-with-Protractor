@@ -17,8 +17,8 @@ Yes, it's that easy!!
 Now, let's have a look at the functionality that we want to test:
 
 1. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No"
-2. When the checkbox is un-checked, credit card number input field would be disabled and on checking it, input field will be enabled
-3. There is Save button also. On clicking the Save button error/success message is displayed
+2. When the checkbox is un-checked, credit card number input field and `Save` button would be disabled and on checking it, both fields will be enabled
+3. On clicking the `Save` button error/success message is displayed
 4. Error message would be displayed in the following conditions
     1. When input field is empty.
     2. When anything except numbers is input in the input field.
@@ -27,63 +27,74 @@ Now, let's have a look at the functionality that we want to test:
     1. When a 16-digit number is input in the input field.
     2. Success message would also include the 16-digit number added in the input field.
 
-Here is the HTML and JavaScript code:
+Here is the **HTML** and **JavaScript** code:
 
+**creditCard.html**
 ```HTML
 <!DOCTYPE html>
 <html ng-app="creditCardApp">
 <head lang="en">
     <meta charset="UTF-8">
     <title>Credit Card</title>
-    <link href="appStyle.css" rel="stylesheet">
+    <link href="src/css/appStyle.css" rel="stylesheet">
 </head>
 <body ng-controller="CardController">
 <div>
     <p>Do you have a credit card?</p>
-    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard" ng-click="checkClicked()">
+    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
+           ng-click="checkClicked()">
     <span>{{data.checkCard}}</span>
 </div>
 <div>
     <p>If yes, please enter your credit card number here:</p>
-    <input type="text" name="myField" id="hasCard" ng-disabled="data.checkCard!='Yes'" ng-model="data.cardNumber" minlength="16" maxlength="16" required>
-    <input type="button" value="Save" id="save" ng-click="alert(data.cardNumber);">
+    <input type="text" name="myField" id="hasCard" ng-disabled="data.checkCard != 'Yes'" ng-model="data.cardNumber"
+           minlength="16" maxlength="16">
+    <input type="button" value="Save" id="save" ng-disabled="data.checkCard != 'Yes'" ng-click="save();">
 </div>
 </br>
 <div class="error" ng-if="!successMessage">
-{{errorMessage}}
+    {{errorMessage}}
 </div>
 <div class="success" ng-if="!errorMessage">
-{{successMessage}}
+    {{successMessage}}
 </div>
-<script src="angular.min.js"></script>
-<script src="appController.js"></script>
+<script src="src/js/angular.min.js"></script>
+<script src="src/js/appController.js"></script>
 </body>
 </html>
 ```
 
+**appController.js**
 ```JavaScript
 var creditCardApp = angular.module('creditCardApp', []);
-creditCardApp.controller('CardController', ['$scope', function($scope) {
-    $scope.data = {checkCard:"", cardNumber:""};
-    $scope.alert = function(text){
-        if(isNaN($scope.data.cardNumber)|| !$scope.data.cardNumber){
-            $scope.errorMessage="Please enter a valid credit card number";
-            $scope.successMessage="";
-        }
-        else{
-            $scope.successMessage = "Your credit card number" + " " + text + " has been saved with us.";
-            $scope.errorMessage = "";
+creditCardApp.controller('CardController', ['$scope', function ($scope) {
+    $scope.data = {checkCard: "", cardNumber: ""};
+    $scope.save = function () {
+        $scope.successMessage = "";
+        $scope.errorMessage = "";
+        if (!$scope.data.cardNumber) {
+            $scope.errorMessage = "Please enter valid credit card number";
+        } else if(isNaN($scope.data.cardNumber)) {
+            $scope.errorMessage = "Credit card number can have only Numbers(0-9)";
+        } else {
+            $scope.successMessage = "Your credit card number" + $scope.data.cardNumber + " has been saved with us.";
+            $scope.data.cardNumber = "";
         }
     };
-    $scope.checkClicked = function(){
-        if($scope.data.checkCard==="No"){
-            $scope.data.cardNumber="";
+    $scope.checkClicked = function () {
+        if ($scope.data.checkCard === "No") {
+            $scope.data.cardNumber = "";
         }
     };
 }]);
 ```
-  First, we need to open our **application**, which we can do by : ``` browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");```
-  We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
+
+You can open `creditCard.html` in your favourite browser and test it manually that is it working as expected or not? Then we will test with **Protractor**.
+
+###How to Test with Protractor??
+
+First, we need to open our **application**, which we can do by : ``` browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");```
+We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
 
 
   We will write our tests in spec.js file kept in a test folder. There is another file named as conf.js which will have our configuration related details. This file would also be kept in the test folder. Our conf.js would look something like this:
