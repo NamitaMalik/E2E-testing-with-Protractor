@@ -93,129 +93,130 @@ You can open `creditCard.html` in your favourite browser and test it manually th
 
 ###How to Test with Protractor??
 
-First, we need to open our **application**, which we can do by : ``` browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");```
+First, we need to open our **application**, which we can do by : `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`
 We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
 
+We will write our tests in `spec.js` file kept in a test folder. There is another file named as `conf.js` which will have our configuration related details. This file would also be kept in the test folder. Our `conf.js` would look something like this:
 
-  We will write our tests in spec.js file kept in a test folder. There is another file named as conf.js which will have our configuration related details. This file would also be kept in the test folder. Our conf.js would look something like this:
+**conf.js**
+```JavaScript
+exports.config = {
+    seleniumAddress: 'http://localhost:4444/wd/hub',
+    specs: ['spec.js']
+};
+```
 
-  ```conf.js
-  exports.config = {
-      seleniumAddress: 'http://localhost:4444/wd/hub',
-      specs: ['spec.js']
-  };
-  ```
-  Now, let's check with the help of **Protractor** if this functionality works as per the mentioned specs.
+Now, let's check with the help of **Protractor** if this functionality works as per the mentioned specs.
 
-    Test Case 1 : First let's check if the title of the page is "Credit Card" or not.
+Test Case 1: First let's check if the title of the page is "Credit Card" or not.
 
-  I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand:
+I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand:
 
-  ```
-     it('should have correct title', function () {
-                expect(browser.getTitle()).toEqual('Credit Card');
-            });
-  ```
+```JavaScript
+    it('should have correct title', function () {
+        expect(browser.getTitle()).toEqual('Credit Card');
+    });
+```
 
-  **it** is the **Jasmine** function. **it** takes two parameters:
+**it** is the **Jasmine** function. **it** takes two parameters:
 
-   1. String - This string is a kind of sentence, that explains what is being tested.
-   2. function - This is a callback function
+1. String - This string is a kind of sentence, that explains what is being tested.
+2. function - This is a callback function
 
-   We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** function.
+We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** function.
 
-   So we expect our page title to be(to be equal to) "Credit Card". So we are first getting the title using ```getTitle()``` function and then comparing with the expected title using the ```toEqual``` function.
+So we expect our page title to be(to be equal to) "Credit Card". So we are first getting the title using ```getTitle()``` function and then comparing with the expected title using the ```toEqual``` function.
 
-   I know this doesn't interests you at all in case you already know **Jasmine**.
+I know this doesn't interests you at all in case you already know **Jasmine**.
 
-   Now, let's write another test:
+Now, let's write another test:
 
-    Test Case 2 : Input field should be disabled when hasCreditCard checkbox is unchecked.
+Test Case 2 : Input field should be disabled when hasCreditCard checkbox is unchecked.
 
-        ```
-        it('input box should be disabled',function(){
-                      expect(element(by.id('hasCard')).isEnabled()).toBe(false);
-                   });
+```JavaScript
+it('input box should be disabled',function(){
+    expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+});
+```
 
-        ```
+In the above **it** block, we are first getting the element using the **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` function. ```isEnabled()``` function returns a boolean value, true if element is enabled and false if it is not.
+In our case, this boolean value should be false as checkbox is un-checked.
 
-   In the above **it** block, we are first getting the element using the **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` function. ```isEnabled()``` function returns a boolean value, true if element is enabled and false if it is not.
-   In our case, this boolean value should be false as checkbox is un-checked.
+Test Case Case 3 : Error message should appear on entering an invalid credit card number.
 
-    Test Case Case 3 : Error message should appear on entering an invalid credit card number.
+```
+it('error message should be shown when non numeric characters are written in input',function(){
+    element(by.model('data.checkCard')).click();
+    element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
+    element(by.id('save')).click();
+    expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+});
+```
 
-    ```
-    it('error message should be shown when non numeric characters are written in input',function(){
-                element(by.model('data.checkCard')).click();
-                element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
-                element(by.id('save')).click();
-                expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
-            });
+In the previous test we had used **id** as the selector, whereas in the above test case we are using a new selector i.e. **model**.
+In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
+Our expectation is that an error message should appear. We are using the binding's name and getting text from it and checking if it is equal to the expected text.
 
-    ```
-   In the previous test we had used **id** as the selector, whereas in the above test case we are using a new selector i.e. **model**.
-   In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
-   Our expectation is that an error message should appear. We are using the binding's name and getting text from it and checking if it is equal to the expected text.
+Here is the complete `spec.js` file:
 
-   Here is the complete spec.js file:
+**spec.js**
+```JavaScript
+(function () {
+    function openBrowser() {
+        browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+    }
+    describe('Saving Credit Card Number', function () {
+        beforeEach(function () {
+            openBrowser();
+        });
+        it('should have correct title', function () {
+            expect(browser.getTitle()).toEqual('Credit Card');
+        });
+        it('keeps the input field disabled', function () {
+            expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+        });
+        it('enables the input field', function () {
+            element(by.model('data.checkCard')).click();
+            expect(element(by.id('hasCard')).isEnabled()).toBe(true);
+        });
+        it('gives an error message on writing invalid credit card number', function () {
+            element(by.model('data.checkCard')).click();
+            element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
+            element(by.id('save')).click();
+            expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+        });
+        it('gives a success message on writing a valid credit card number', function () {
+            var cardNumber = "1234567899009876";
+            element(by.model('data.checkCard')).click();
+            element(by.model('data.cardNumber')).sendKeys(cardNumber);
+            element(by.id('save')).click();
+            var textToCheck =
+                expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number" + " " + cardNumber + " has been saved with us.");
+        });
+        it('gives an error message when credit card number entered is less than 16 digits', function () {
+            element(by.model('data.checkCard')).click();
+            element(by.model('data.cardNumber')).sendKeys("1234567890");
+            element(by.id('save')).click();
+            expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+        });
+    });
+})();
+```
 
-   ```spec.js
-   (function () {
-       function openBrowser() {
-           browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
-       }
-       describe('Saving Credit Card Number', function () {
-           beforeEach(function () {
-               openBrowser();
-           });
-           it('should have correct title', function () {
-               expect(browser.getTitle()).toEqual('Credit Card');
-           });
-           it('keeps the input field disabled',function(){
-              expect(element(by.id('hasCard')).isEnabled()).toBe(false);
-           });
-           it('enables the input field',function(){
-               element(by.model('data.checkCard')).click();
-               expect(element(by.id('hasCard')).isEnabled()).toBe(true);
-           });
-           it('gives an error message on writing invalid credit card number',function(){
-               element(by.model('data.checkCard')).click();
-               element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
-               element(by.id('save')).click();
-               expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
-           });
-           it('gives a success message on writing a valid credit card number',function(){
-               var cardNumber = "1234567899009876";
-               element(by.model('data.checkCard')).click();
-               element(by.model('data.cardNumber')).sendKeys(cardNumber);
-               element(by.id('save')).click();
-               var textToCheck =
-               expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number" + " " + cardNumber + " has been saved with us.");
-           });
-           it('gives an error message when credit card number entered is less than 16 digits',function(){
-               element(by.model('data.checkCard')).click();
-               element(by.model('data.cardNumber')).sendKeys("1234567890");
-               element(by.id('save')).click();
-               expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
-           });
-       });
-   })();
-   ```
-   To run these test you will have to do the following:
+To run these test you will have to do the following:
 
-   1. Go to console and run webdriver-manager star command.
-   2. On the console go the test folder and run the command **Protractor** conf.js
+1. Go to console and run webdriver-manager star command.
+2. On the console go the test folder and run the command **Protractor** conf.js
 
-   You will see a **Chrome** window opening up and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console.
+You will see a **Chrome** window opening up and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console.
 
+Well, these were a few test cases on the simple functionality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
-   Well, these were a few test cases on the simple functionality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
+1. by.css
+2. by.id
+3. by.model
+4. by.binding
 
-   1. by.css
-   2. by.id
-   3. by.model
-   4. by.binding
+In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper functions:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
 
-   In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper functions:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
-
-   Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from here.
+Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from [Github Repo](https://github.com/NamitaMalik/E2E-testing-with-Protractor).
