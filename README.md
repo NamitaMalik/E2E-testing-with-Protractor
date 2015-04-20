@@ -93,8 +93,7 @@ You can open `creditCard.html` in your favourite browser and test it manually th
 
 ###How to Test with Protractor??
 
-First, we need to open our **application**, which we can do by : `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`
-We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
+First, we need to open our **application**, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");` We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
 
 We will write our tests in `spec.js` file kept in a test folder. There is another file named as `conf.js` which will have our configuration related details. This file would also be kept in the test folder. Our `conf.js` would look something like this:
 
