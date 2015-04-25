@@ -1,5 +1,8 @@
-(function () {
+/**
+ * Created by Namita Malik on 12/4/15.
+ */
 
+(function () {
     function openBrowser() {
         browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
     }
