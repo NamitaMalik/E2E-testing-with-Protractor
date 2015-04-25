@@ -9,7 +9,7 @@ There are a hell lot of **automation** frameworks available but for **AngularJS*
 Now, its time to get our hands dirty with some piece of code, but before that let's have a look at some pre-requisites:
 
 Let's set up **Protractor** on your system(I am assuming that **NodeJS** is installed on your system)
-  1. Install **Protractor** globally using the command  ```npm install –g protractor``` or use the command ```npm install protractor``` if you want to install it for a particular project.
+  1. Install **Protractor** globally using the command  ```npm install protractor –g``` or use the command ```npm install protractor``` if you want to install it for a particular project.
   2. To check if you have correctly installed it, use the command ```protractor --version```.
 
 Yes, it's that easy!!
