@@ -22,7 +22,7 @@
             element(by.model('data.checkCard')).click();
             element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
             element(by.id('save')).click();
-            expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+            expect(element(by.binding('errorMessage')).getText()).toEqual("Credit card number can have only Numbers(0-9)");
         });
         it('gives a success message on writing a valid credit card number', function () {
             var cardNumber = "1234567899009876";

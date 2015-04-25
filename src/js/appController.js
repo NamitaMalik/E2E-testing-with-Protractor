@@ -10,11 +10,11 @@ creditCardApp.controller('CardController', ['$scope', function ($scope) {
         $scope.successMessage = "";
         $scope.errorMessage = "";
         if (!$scope.data.cardNumber) {
-            $scope.errorMessage = "Please enter valid credit card number";
+            $scope.errorMessage = "Please enter a valid credit card number";
         } else if (isNaN($scope.data.cardNumber)) {
             $scope.errorMessage = "Credit card number can have only Numbers(0-9)";
         } else {
-            $scope.successMessage = "Your credit card number" + $scope.data.cardNumber + " has been saved with us.";
+            $scope.successMessage = "Your credit card number " + $scope.data.cardNumber + " has been saved with us.";
             $scope.data.cardNumber = "";
         }
     };

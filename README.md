@@ -11,19 +11,20 @@ Now, its time to get our hands dirty with some piece of code, but before that le
 Let's set up **Protractor** on your system(I am assuming that **NodeJS** is installed on your system)
   1. Install **Protractor** globally using the command  ```npm install protractor –g``` or use the command ```npm install protractor``` if you want to install it for a particular project.
   2. To check if you have correctly installed it, use the command ```protractor --version```.
+  3. **Protractor** install **Selenium webdriver manager** with it, update **Selenium webdriver manager** with command `webdriver-manager update`.
 
 Yes, it's that easy!!
 
 Now, let's have a look at the functionality that we want to test:
 
-1. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No"
-2. When the checkbox is un-checked, credit card number input field and `Save` button would be disabled and on checking it, both fields will be enabled
-3. On clicking the `Save` button error/success message is displayed
-4. Error message would be displayed in the following conditions
+1. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".
+2. When the checkbox is un-checked, `credit card number` input field and `Save` button would be disabled and on checking it, both fields will be enabled.
+3. On clicking the `Save` button error/success message is displayed.
+4. Error message would be displayed in the following conditions.
     1. When input field is empty.
     2. When anything except numbers is input in the input field.
     3. When less than 16 digits are added in the input field.
-5. Success Message would be shown in the following cases
+5. Success Message would be shown in the following cases.
     1. When a 16-digit number is input in the input field.
     2. Success message would also include the 16-digit number added in the input field.
 
@@ -74,7 +75,7 @@ creditCardApp.controller('CardController', ['$scope', function ($scope) {
         $scope.errorMessage = "";
         if (!$scope.data.cardNumber) {
             $scope.errorMessage = "Please enter valid credit card number";
-        } else if(isNaN($scope.data.cardNumber)) {
+        } else if (isNaN($scope.data.cardNumber)) {
             $scope.errorMessage = "Credit card number can have only Numbers(0-9)";
         } else {
             $scope.successMessage = "Your credit card number" + $scope.data.cardNumber + " has been saved with us.";
@@ -89,13 +90,16 @@ creditCardApp.controller('CardController', ['$scope', function ($scope) {
 }]);
 ```
 
-You can open `creditCard.html` in your favourite browser and test it manually that is it working as expected or not? Then we will test with **Protractor**.
+You can open `creditCard.html` in your favourite browser and test it manually that is it working as expected behaviour or not? Then we will test with **Protractor**.
 
 ###How to Test with Protractor??
 
-First, we need to open our **application**, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");` We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
+1. Create a **test** named folder in your project directory.
+2. Now create `conf.js` named **configuration** file for our test cases and save it in test directory. We define two things in it:
+    1. **seleniumAddress**: Address of **Selenium webdriver manager**.
+    2. **specs**: Our test case file, which should be run.
 
-We will write our tests in `spec.js` file kept in a test folder. There is another file named as `conf.js` which will have our configuration related details. This file would also be kept in the test folder. Our `conf.js` would look something like this:
+Our `conf.js` would look something like this:
 
 **conf.js**
 ```JavaScript
@@ -105,7 +109,21 @@ exports.config = {
 };
 ```
 
+#####Lest write first Protractor test case:
+
+
 Now, let's check with the help of **Protractor** if this functionality works as per the mentioned specs.
+
+
+
+
+
+First, we need to open our **application**, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");` We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
+
+
+
+
+
 
 Test Case 1: First let's check if the title of the page is "Credit Card" or not.
 
