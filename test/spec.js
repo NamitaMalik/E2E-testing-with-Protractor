@@ -1,12 +1,15 @@
-(function () {
+/**
+ * Created by Namita Malik on 12/4/15.
+ */
 
-    function openBrowser() {
+(function () {
+    function openApplicationInBrowser() {
         browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
     }
 
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
-            openBrowser();
+            openApplicationInBrowser();
         });
         it('should have correct title', function () {
             expect(browser.getTitle()).toEqual('Credit Card');

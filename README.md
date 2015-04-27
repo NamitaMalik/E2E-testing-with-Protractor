@@ -67,27 +67,29 @@ Here is the **HTML** and **JavaScript** code:
 
 **appController.js**
 ```JavaScript
-var creditCardApp = angular.module('creditCardApp', []);
-creditCardApp.controller('CardController', ['$scope', function ($scope) {
-    $scope.data = {checkCard: "", cardNumber: ""};
-    $scope.save = function () {
-        $scope.successMessage = "";
-        $scope.errorMessage = "";
-        if (!$scope.data.cardNumber) {
-            $scope.errorMessage = "Please enter valid credit card number";
-        } else if (isNaN($scope.data.cardNumber)) {
-            $scope.errorMessage = "Credit card number can have only Numbers(0-9)";
-        } else {
-            $scope.successMessage = "Your credit card number" + $scope.data.cardNumber + " has been saved with us.";
-            $scope.data.cardNumber = "";
-        }
-    };
-    $scope.checkClicked = function () {
-        if ($scope.data.checkCard === "No") {
-            $scope.data.cardNumber = "";
-        }
-    };
-}]);
+(function (ng) {
+    var creditCardApp = ng.module('creditCardApp', []);
+    creditCardApp.controller('CardController', ['$scope', function ($scope) {
+        $scope.data = {checkCard: "", cardNumber: ""};
+        $scope.save = function () {
+            $scope.successMessage = "";
+            $scope.errorMessage = "";
+            if (!$scope.data.cardNumber) {
+                $scope.errorMessage = "Please enter a valid credit card number";
+            } else if (isNaN($scope.data.cardNumber)) {
+                $scope.errorMessage = "Credit card number can have only Numbers(0-9)";
+            } else {
+                $scope.successMessage = "Your credit card number " + $scope.data.cardNumber + " has been saved with us.";
+                $scope.data.cardNumber = "";
+            }
+        };
+        $scope.checkClicked = function () {
+            if ($scope.data.checkCard === "No") {
+                $scope.data.cardNumber = "";
+            }
+        };
+    }]);
+})(angular);
 ```
 
 You can open `creditCard.html` in your favourite browser and test it manually that is it working as expected behaviour or not? Then we will test with **Protractor**.
@@ -110,39 +112,62 @@ exports.config = {
 ```
 
 #####Lest write first Protractor test case:
-
-
-Now, let's check with the help of **Protractor** if this functionality works as per the mentioned specs.
-
-
-
-
-
-First, we need to open our **application**, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");` We have kept this in a ```beforeEach()``` block since we would need this to be executed before every test.
-
-
-
-
-
-
-Test Case 1: First let's check if the title of the page is "Credit Card" or not.
-
-I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand:
-
-```JavaScript
+1. First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
+    
+    **spec.js:**
+    ```JavaScript
+    (function () {
+        function openApplicationInBrowser() {
+            browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+        }
+        describe('Saving Credit Card Number', function () {
+            beforeEach(function () {
+                openApplicationInBrowser();
+            });
+        });
+    })();
+    ```
+2. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand.
+   
+    ```JavaScript
     it('should have correct title', function () {
         expect(browser.getTitle()).toEqual('Credit Card');
     });
-```
+    ```
+    **it** is the **Jasmine** **function**. **it** takes two parameters
+    1. **String** - This string is a kind of sentence, that explains what is being tested.
+    2. **function** - This is a callback **function**.
 
-**it** is the **Jasmine** function. **it** takes two parameters:
+    We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** **function**.
+    
+    So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
+    
+    **Resultant spec.js:**
+    ```JavaScript
+    (function () {
+        function openApplicationInBrowser() {
+            browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+        }
+        describe('Saving Credit Card Number', function () {
+            beforeEach(function () {
+                openApplicationInBrowser();
+            });
+            it('should have correct title', function () {
+                expect(browser.getTitle()).toEqual('Credit Card');
+            });
+        });
+    })();
+    ```
+    
+#####How to run test case?
+1. Start **Selenium webdriver manager** with command `webdriver-manager start`.
+> NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
+2. Now go to your `test` directory, and run test case with command `Protractor conf.js`.
+> NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
-1. String - This string is a kind of sentence, that explains what is being tested.
-2. function - This is a callback function
+That's it. When you will try to run the test cases, you will see your system's default browser will open, and and will closed as test case will complete. You will see output something like this:
 
-We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** function.
-
-So we expect our page title to be(to be equal to) "Credit Card". So we are first getting the title using ```getTitle()``` function and then comparing with the expected title using the ```toEqual``` function.
+![result.png](https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/result.png)
 
 I know this doesn't interests you at all in case you already know **Jasmine**.
 
@@ -156,7 +181,7 @@ it('input box should be disabled',function(){
 });
 ```
 
-In the above **it** block, we are first getting the element using the **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` function. ```isEnabled()``` function returns a boolean value, true if element is enabled and false if it is not.
+In the above **it** block, we are first getting the element using the **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` **function**. ```isEnabled()``` **function** returns a boolean value, true if element is enabled and false if it is not.
 In our case, this boolean value should be false as checkbox is un-checked.
 
 Test Case Case 3 : Error message should appear on entering an invalid credit card number.
@@ -227,13 +252,13 @@ To run these test you will have to do the following:
 
 You will see a **Chrome** window opening up and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console.
 
-Well, these were a few test cases on the simple functionality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
+Well, these were a few test cases on the simple **function**ality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
 1. by.css
 2. by.id
 3. by.model
 4. by.binding
 
-In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper functions:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
+In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper **functions**:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
 
 Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from [Github Repo](https://github.com/NamitaMalik/E2E-testing-with-Protractor).
