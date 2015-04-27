@@ -113,7 +113,6 @@ exports.config = {
 
 #####Lest write first Protractor test case:
 1. First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
-    
     **spec.js:**
     ```JavaScript
     (function () {
@@ -128,7 +127,6 @@ exports.config = {
     })();
     ```
 2. Let's check if the title of the page is "Credit Card" or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand.
-    
     ```JavaScript
     it('should have correct title', function () {
         expect(browser.getTitle()).toEqual('Credit Card');
