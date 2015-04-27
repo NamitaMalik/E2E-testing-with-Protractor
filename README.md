@@ -167,7 +167,7 @@ exports.config = {
 
 That's it. When you will try to run the test cases, you will see your system's default browser will open, and and will closed as test case will complete. You will see output something like this:
 
-![result.png](https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/result.png)
+![result.png](https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/images/result.png)
 
 I know this doesn't interests you at all in case you already know **Jasmine**.
 

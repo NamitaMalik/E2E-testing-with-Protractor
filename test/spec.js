@@ -15,11 +15,11 @@
             expect(browser.getTitle()).toEqual('Credit Card');
         });
         it('keeps the input field disabled', function () {
-            expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
         });
         it('enables the input field', function () {
             element(by.model('data.checkCard')).click();
-            expect(element(by.id('hasCard')).isEnabled()).toBe(true);
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(true);
         });
         it('gives an error message on writing invalid credit card number', function () {
             element(by.model('data.checkCard')).click();
