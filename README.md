@@ -209,7 +209,7 @@ In the above **it** block, we are first getting the element using the **model** 
 
 In our case, this boolean value should be false as checkbox is un-checked.
 
-Test Case Case 3 : Error message should appear on entering an invalid credit card number.
+Test Case 3 : Error message should appear on entering an invalid credit card number.
 
 ```JavaScript
 it('gives an error message on writing invalid credit card number', function () {
