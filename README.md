@@ -178,62 +178,65 @@ Test Case 2 : `Card Number` input and `Save` button will be disabled by default.
 ```JavaScript
 it('checks if the input field is by default disabled', function () {
     expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
+    expect(element(by.id('save')).isEnabled()).toBe(false);
 });
 ```
 
-In the above **it** block, we are first getting the element using the **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` **function**. ```isEnabled()``` **function** returns a boolean value, true if element is enabled and false if it is not.
+In the above **it** block, we are first getting the element using the **model** and **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` **function**. ```isEnabled()``` **function** returns a boolean value, true if element is enabled and false if it is not.
+
 In our case, this boolean value should be false as checkbox is un-checked.
 
 Test Case Case 3 : Error message should appear on entering an invalid credit card number.
 
-```
-it('error message should be shown when non numeric characters are written in input',function(){
+```JavaScript
+it('gives an error message on writing invalid credit card number', function () {
     element(by.model('data.checkCard')).click();
     element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
     element(by.id('save')).click();
-    expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+    expect(element(by.binding('errorMessage')).getText()).toEqual("Credit card number can have only Numbers(0-9)");
 });
 ```
 
-In the previous test we had used **id** as the selector, whereas in the above test case we are using a new selector i.e. **model**.
+In the previous test we had used **model** and **id** as the selector, whereas in the above test case we are using a new selector i.e. **binding**.
+
 In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
+
 Our expectation is that an error message should appear. We are using the binding's name and getting text from it and checking if it is equal to the expected text.
 
 Here is the complete `spec.js` file:
-
 **spec.js**
 ```JavaScript
 (function () {
-    function openBrowser() {
+    function openApplicationInBrowser() {
         browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
-            openBrowser();
+            openApplicationInBrowser();
         });
         it('should have correct title', function () {
             expect(browser.getTitle()).toEqual('Credit Card');
         });
-        it('keeps the input field disabled', function () {
-            expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+        it('checks if the input field is by default disabled', function () {
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
+            expect(element(by.id('save')).isEnabled()).toBe(false);
         });
         it('enables the input field', function () {
             element(by.model('data.checkCard')).click();
-            expect(element(by.id('hasCard')).isEnabled()).toBe(true);
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(true);
         });
         it('gives an error message on writing invalid credit card number', function () {
             element(by.model('data.checkCard')).click();
             element(by.model('data.cardNumber')).sendKeys("abcdefghijkikiki");
             element(by.id('save')).click();
-            expect(element(by.binding('errorMessage')).getText()).toEqual("Please enter a valid credit card number");
+            expect(element(by.binding('errorMessage')).getText()).toEqual("Credit card number can have only Numbers(0-9)");
         });
         it('gives a success message on writing a valid credit card number', function () {
             var cardNumber = "1234567899009876";
             element(by.model('data.checkCard')).click();
             element(by.model('data.cardNumber')).sendKeys(cardNumber);
             element(by.id('save')).click();
-            var textToCheck =
-                expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number" + " " + cardNumber + " has been saved with us.");
+            expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number " + cardNumber + " has been saved with us.");
         });
         it('gives an error message when credit card number entered is less than 16 digits', function () {
             element(by.model('data.checkCard')).click();

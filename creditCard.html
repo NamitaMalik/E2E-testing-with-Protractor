@@ -19,11 +19,8 @@
     <input type="button" value="Save" id="save" ng-disabled="data.checkCard != 'Yes'" ng-click="save();">
 </div>
 </br>
-<div class="error" ng-if="!successMessage">
-    {{errorMessage}}
-</div>
-<div class="success" ng-if="!errorMessage">
-    {{successMessage}}
+<div ng-class="{error: errorMessage, success: successMessage}">
+    {{errorMessage}} {{successMessage}}
 </div>
 <script src="src/js/angular.min.js"></script>
 <script src="src/js/appController.js"></script>
