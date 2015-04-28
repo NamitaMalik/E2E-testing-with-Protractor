@@ -14,12 +14,13 @@
         it('should have correct title', function () {
             expect(browser.getTitle()).toEqual('Credit Card');
         });
-        it('keeps the input field disabled', function () {
-            expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+        it('checks if the input field is by default disabled', function () {
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
+            expect(element(by.id('save')).isEnabled()).toBe(false);
         });
         it('enables the input field', function () {
             element(by.model('data.checkCard')).click();
-            expect(element(by.id('hasCard')).isEnabled()).toBe(true);
+            expect(element(by.model('data.cardNumber')).isEnabled()).toBe(true);
         });
         it('gives an error message on writing invalid credit card number', function () {
             element(by.model('data.checkCard')).click();
@@ -32,8 +33,7 @@
             element(by.model('data.checkCard')).click();
             element(by.model('data.cardNumber')).sendKeys(cardNumber);
             element(by.id('save')).click();
-            var textToCheck =
-                expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number" + " " + cardNumber + " has been saved with us.");
+            expect(element(by.binding('successMessage')).getText()).toEqual("Your credit card number " + cardNumber + " has been saved with us.");
         });
         it('gives an error message when credit card number entered is less than 16 digits', function () {
             element(by.model('data.checkCard')).click();
