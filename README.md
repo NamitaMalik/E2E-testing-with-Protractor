@@ -1,6 +1,6 @@
 # E2E Testing with Protractor
 
-We all know that **end to end testings** is done to test the flow of **application**. It can either be done manually or using some kind of **automation** tool/framework.
+We all know that **end to end testing** is done to test the flow of **application**. It can either be done manually or using some kind of **automation** tool/framework.
 
 There are a hell lot of **automation** frameworks available but for **AngularJS**, **Protractor** is being promoted. **Protractor** combines powerful tools and technologies such as **NodeJS**, **Selenium Webdriver**, **Jasmine**, **Mocha** and **Cucumber**.
 
@@ -8,17 +8,17 @@ There are a hell lot of **automation** frameworks available but for **AngularJS*
 
 Now, its time to get our hands dirty with some piece of code, but before that let's have a look at some pre-requisites:
 
-Let's set up **Protractor** on your system(I am assuming that **NodeJS** is installed on your system)
+Let's set up **Protractor** on your system(I am assuming that **NodeJS** is already installed)
   1. Install **Protractor** globally using the command  ```npm install protractor –g``` or use the command ```npm install protractor``` if you want to install it for a particular project.
   2. To check if you have correctly installed it, use the command ```protractor --version```.
-  3. **Protractor** install **Selenium webdriver manager** with it, update **Selenium webdriver manager** with command `webdriver-manager update`.
+  3. **Protractor** installs **Selenium webdriver manager** with it, update **Selenium webdriver manager** with command `webdriver-manager update`.
 
 Yes, it's that easy!!
 
 Now, let's have a look at the functionality that we want to test:
 
 1. There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".
-2. When the checkbox is un-checked, `credit card number` input field and `Save` button would be disabled and on checking it, both fields will be enabled.
+2. When the checkbox is un-checked state, `credit card number` input field and `Save` button would be disabled and on checking it, both fields will be enabled.
 3. On clicking the `Save` button error/success message is displayed.
 4. Error message would be displayed in the following conditions.
     1. When input field is empty.
@@ -92,7 +92,13 @@ Here is the **HTML** and **JavaScript** code:
 })(angular);
 ```
 
-You can open `creditCard.html` in your favourite browser and test it manually that is it working as expected behaviour or not? Then we will test with **Protractor**.
+Let's manually test if our application is working fine or not. Do follow these steps:
+
+  1. Install http-server module globally with npm install ```http-server -g``` command.
+  2. Run http-server command.
+  3. Open http://localhost:8080/E2E-testing-with-Protractor/creditCard.html in your favorite browser and check if application is running.
+
+(Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above js and html files) folder, but to run our test cases it would be helpful if we run it through localhost.)
 
 ###How to Test with Protractor??
 
@@ -110,15 +116,28 @@ exports.config = {
     specs: ['spec.js']
 };
 ```
+By default your tests will run on **chrome** only, but in case you want to run your test cases on both chrome and firefox, you can add an additional property named as **multiCapabilities** in your **conf.js** as given below:
+
+```JavaScript
+exports.config = {
+    seleniumAddress: 'http://localhost:4444/wd/hub',
+    specs: ['spec.js'],
+    multiCapabilities: [{
+        browserName: 'firefox'
+    }, {
+        browserName: 'chrome'
+    }]
+};
+```
 
 #####Lest write first Protractor test case:
-1. First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
+First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
     
     **spec.js:**
     ```JavaScript
     (function () {
         function openApplicationInBrowser() {
-            browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+            browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
         }
         describe('Saving Credit Card Number', function () {
             beforeEach(function () {
@@ -127,7 +146,7 @@ exports.config = {
         });
     })();
     ```
-2. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** let us describe how describe how software should behave in a plain text. Therefore our test would look something like this, easy to understand.
+Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.
    
     ```JavaScript
     it('should have correct title', function () {
@@ -138,7 +157,7 @@ exports.config = {
     1. **String** - This string is a kind of sentence, that explains what is being tested.
     2. **function** - This is a callback **function**.
 
-    We write all the code in the **it** block that we need for **testings**. Usually the tests are started by writing an **expect** **function**.
+    We write all the code in the **it** block that we need for **testing**. Usually the tests are started by writing an **expect** **function**.
     
     So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
     
@@ -146,7 +165,7 @@ exports.config = {
     ```JavaScript
     (function () {
         function openApplicationInBrowser() {
-            browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+            browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
         }
         describe('Saving Credit Card Number', function () {
             beforeEach(function () {
@@ -186,7 +205,7 @@ it('checks if the input field is by default disabled', function () {
 });
 ```
 
-In the above **it** block, we are first getting the element using the **model** and **id** selector and then we check if that element is enabled or not, using the ```isEnabled``` **function**. ```isEnabled()``` **function** returns a boolean value, true if element is enabled and false if it is not.
+In the above **it** block, we are first getting the element using the **model** selector and then we check if that element is enabled or not, using the ```isEnabled``` **function**. ```isEnabled()``` **function** returns a boolean value, true if element is enabled and false if it is not.
 
 In our case, this boolean value should be false as checkbox is un-checked.
 
@@ -201,7 +220,7 @@ it('gives an error message on writing invalid credit card number', function () {
 });
 ```
 
-In the previous test we had used **model** and **id** as the selector, whereas in the above test case we are using a new selector i.e. **binding**.
+In the previous test we had used only **model** and **id** as the selector, whereas in the above test case we are using a new selector i.e. **binding**.
 
 In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
 
@@ -212,7 +231,7 @@ Here is the complete `spec.js` file:
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -252,7 +271,7 @@ Here is the complete `spec.js` file:
 })();
 ```
 
-Well, these were a few test cases on the simple **function**ality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
+Well, these were a few test cases on the simple **functionality** that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
 1. by.css
 2. by.id

@@ -4,7 +4,7 @@
 
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
     }
 
     describe('Saving Credit Card Number', function () {
