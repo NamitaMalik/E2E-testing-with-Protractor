@@ -173,7 +173,7 @@ I know this doesn't interests you at all in case you already know **Jasmine**.
 
 Now, let's write another test:
 
-Test Case 2 : Input field should be disabled when hasCreditCard checkbox is unchecked.
+Test Case 2 : `Card Number` input and `Save` button will be disabled by default.
 
 ```JavaScript
 it('checks if the input field is by default disabled', function () {

@@ -8,7 +8,7 @@
 <body ng-controller="CardController">
 <div>
     <p>Do you have a credit card?</p>
-    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
+    <input type="checkbox" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
            ng-click="checkClicked()">
     <span>{{data.checkCard}}</span>
 </div>
