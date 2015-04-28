@@ -160,12 +160,16 @@ exports.config = {
     ```
     
 #####How to run test case?
-1. Start **Selenium webdriver manager** with command `webdriver-manager start`.
+To run test you will have to do the following:
+
+1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
 > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
-2. Now go to your `test` directory, and run test case with command `Protractor conf.js`.
+2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
 > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
-That's it. When you will try to run the test cases, you will see your system's default browser will open, and and will closed as test case will complete. You will see output something like this:
+You will see a **Chrome** window opening up . 
+
+That's it. When you will try to run the test cases, you will see your system's default browser will open and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console:
 
 ![result.png](https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/images/result.png)
 
@@ -247,13 +251,6 @@ Here is the complete `spec.js` file:
     });
 })();
 ```
-
-To run these test you will have to do the following:
-
-1. Go to console and run webdriver-manager star command.
-2. On the console go the test folder and run the command **Protractor** conf.js
-
-You will see a **Chrome** window opening up and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console.
 
 Well, these were a few test cases on the simple **function**ality that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
