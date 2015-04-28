@@ -14,7 +14,7 @@
         it('should have correct title', function () {
             expect(browser.getTitle()).toEqual('Credit Card');
         });
-        it('keeps the input field disabled', function () {
+        it('checks if the input field is by default disabled', function () {
             expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
         });
         it('enables the input field', function () {

@@ -176,8 +176,8 @@ Now, let's write another test:
 Test Case 2 : Input field should be disabled when hasCreditCard checkbox is unchecked.
 
 ```JavaScript
-it('input box should be disabled',function(){
-    expect(element(by.id('hasCard')).isEnabled()).toBe(false);
+it('checks if the input field is by default disabled', function () {
+    expect(element(by.model('data.cardNumber')).isEnabled()).toBe(false);
 });
 ```
 
