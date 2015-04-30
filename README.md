@@ -133,58 +133,58 @@ exports.config = {
 #####Lest write first Protractor test case:
 First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
     
-    **spec.js:**
-    ```JavaScript
-    (function () {
-        function openApplicationInBrowser() {
-            browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
-        }
-        describe('Saving Credit Card Number', function () {
-            beforeEach(function () {
-                openApplicationInBrowser();
-            });
+**spec.js:**
+```JavaScript
+(function () {
+    function openApplicationInBrowser() {
+        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+    }
+    describe('Saving Credit Card Number', function () {
+        beforeEach(function () {
+            openApplicationInBrowser();
         });
-    })();
-    ```
+    });
+})();
+```
 Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.
    
-    ```JavaScript
-    it('should have correct title', function () {
-        expect(browser.getTitle()).toEqual('Credit Card');
-    });
-    ```
-    **it** is the **Jasmine** **function**. **it** takes two parameters
-    1. **String** - This string is a kind of sentence, that explains what is being tested.
-    2. **function** - This is a callback **function**.
+```JavaScript
+it('should have correct title', function () {
+    expect(browser.getTitle()).toEqual('Credit Card');
+});
+```
+**it** is the **Jasmine** **function**. **it** takes two parameters
+1. **String** - This string is a kind of sentence, that explains what is being tested.
+2. **function** - This is a callback **function**.
 
-    We write all the code in the **it** block that we need for **testing**. Usually the tests are started by writing an **expect** **function**.
-    
-    So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
-    
-    **Resultant spec.js:**
-    ```JavaScript
-    (function () {
-        function openApplicationInBrowser() {
-            browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
-        }
-        describe('Saving Credit Card Number', function () {
-            beforeEach(function () {
-                openApplicationInBrowser();
-            });
-            it('should have correct title', function () {
-                expect(browser.getTitle()).toEqual('Credit Card');
-            });
+We write all the code in the **it** block that we need for **testing**. Usually the tests are started by writing an **expect** **function**.
+
+So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
+
+**Resultant spec.js:**
+```JavaScript
+(function () {
+    function openApplicationInBrowser() {
+        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+    }
+    describe('Saving Credit Card Number', function () {
+        beforeEach(function () {
+            openApplicationInBrowser();
         });
-    })();
-    ```
+        it('should have correct title', function () {
+            expect(browser.getTitle()).toEqual('Credit Card');
+        });
+    });
+})();
+```
     
 #####How to run test case?
 To run test you will have to do the following:
 
 1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
-> NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
+    > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
 2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
-> NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
+    > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
 You will see a **Chrome** window opening up . 
 
