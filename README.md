@@ -146,7 +146,7 @@ First of all, we need to open our **application** in the browser, which we can d
 })();
 ```
 
-Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.   
+Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this:
 ```JavaScript
 it('should have correct title', function () {
     expect(browser.getTitle()).toEqual('Credit Card');
