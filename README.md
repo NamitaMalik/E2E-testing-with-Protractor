@@ -94,9 +94,9 @@ Here is the **HTML** and **JavaScript** code:
 
 Let's manually test if our application is working fine or not. Do follow these steps:
 
-  1. Install http-server module globally with npm install ```http-server -g``` command.
-  2. Run http-server command.
-  3. Open http://localhost:8080/E2E-testing-with-Protractor/creditCard.html in your favorite browser and check if application is running.
+1. Install http-server module globally with npm install ```http-server -g``` command.
+2. Run http-server command.
+3. Open http://localhost:8080/E2E-testing-with-Protractor/creditCard.html in your favorite browser and check if application is running.
 
 (Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above js and html files) folder, but to run our test cases it would be helpful if we run it through localhost.)
 
@@ -146,13 +146,14 @@ First of all, we need to open our **application** in the browser, which we can d
     });
 })();
 ```
-Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.
-   
+
+Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.   
 ```JavaScript
 it('should have correct title', function () {
     expect(browser.getTitle()).toEqual('Credit Card');
 });
 ```
+
 **it** is the **Jasmine** **function**. **it** takes two parameters
 1. **String** - This string is a kind of sentence, that explains what is being tested.
 2. **function** - This is a callback **function**.
@@ -182,9 +183,9 @@ So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we a
 To run test you will have to do the following:
 
 1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
-    > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
+> NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
 2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
-    > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
+> NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
 You will see a **Chrome** window opening up . 
 
