@@ -187,8 +187,6 @@ To run test you will have to do the following:
 2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`
 > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
-You will see a **Chrome** window opening up . 
-
 That's it. When you will try to run the test cases, you will see your system's default browser will open and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console:
 
 ![result.png](https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/images/result.png)
