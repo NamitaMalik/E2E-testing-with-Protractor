@@ -160,7 +160,7 @@ it('should have correct title', function () {
 
 We write all the code in the **it** block that we need for **testing**. Usually the tests are started by writing an **expect** **function**.
 
-So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
+We **expect** our page **title** to be(to be equal to) `Credit Card`. So we are first getting the title using `getTitle()` **function** and then comparing with the expected title using the ```toEqual``` **function**.
 
 **Resultant spec.js:**
 ```JavaScript
