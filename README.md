@@ -42,22 +42,19 @@ Here is the **HTML** and **JavaScript** code:
 <body ng-controller="CardController">
 <div>
     <p>Do you have a credit card?</p>
-    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
+    <input type="checkbox" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
            ng-click="checkClicked()">
     <span>{{data.checkCard}}</span>
 </div>
 <div>
     <p>If yes, please enter your credit card number here:</p>
-    <input type="text" name="myField" id="hasCard" ng-disabled="data.checkCard != 'Yes'" ng-model="data.cardNumber"
+    <input type="text" name="myField" ng-disabled="data.checkCard != 'Yes'" ng-model="data.cardNumber"
            minlength="16" maxlength="16">
     <input type="button" value="Save" id="save" ng-disabled="data.checkCard != 'Yes'" ng-click="save();">
 </div>
 </br>
-<div class="error" ng-if="!successMessage">
-    {{errorMessage}}
-</div>
-<div class="success" ng-if="!errorMessage">
-    {{successMessage}}
+<div ng-class="{error: errorMessage, success: successMessage}">
+    {{errorMessage}} {{successMessage}}
 </div>
 <script src="src/js/angular.min.js"></script>
 <script src="src/js/appController.js"></script>
@@ -94,20 +91,22 @@ Here is the **HTML** and **JavaScript** code:
 
 Let's manually test if our application is working fine or not. Do follow these steps:
 
-  1. Install http-server module globally with npm install ```http-server -g``` command.
-  2. Run http-server command.
-  3. Open http://localhost:8080/E2E-testing-with-Protractor/creditCard.html in your favorite browser and check if application is running.
+1. Install **http-server** module globally with ```npm installhttp-server -g``` command.
+2. Clone the project with `git clone git@github.com:NamitaMalik/E2E-testing-with-Protractor.git` command.
+3. Move to clone directory with `cd E2E-testing-with-Protractor` command.
+4. Run **http-server** with `hs` command.
+5. Open **http://localhost:8080/creditCard.html** URL in your favorite browser and check that application is working as expected or not.
 
-(Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above js and html files) folder, but to run our test cases it would be helpful if we run it through localhost.)
+> Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above **.js** and **.html** files) folder, but to run our test cases it would be required to run from a server.
 
 ###How to Test with Protractor??
 
-1. Create a **test** named folder in your project directory.
-2. Now create `conf.js` named **configuration** file for our test cases and save it in test directory. We define two things in it:
+1. Create a **test** named folder in your project directory(E2E-testing-with-Protractor).
+2. Now create `conf.js` named **configuration** file for our test cases and save it in **test** directory. We define two things in it:
     1. **seleniumAddress**: Address of **Selenium webdriver manager**.
     2. **specs**: Our test case file, which should be run.
 
-Our `conf.js` would look something like this:
+So our `conf.js` would look something like this:
 
 **conf.js**
 ```JavaScript
@@ -116,8 +115,8 @@ exports.config = {
     specs: ['spec.js']
 };
 ```
-By default your tests will run on **chrome** only, but in case you want to run your test cases on both chrome and firefox, you can add an additional property named as **multiCapabilities** in your **conf.js** as given below:
 
+By default your tests will run on default browser only, but in case you want to run your test cases on specific browser or in multiple browsers e.g. **chrome** and **safari**, you can add an additional property named as **multiCapabilities** in your **conf.js** as given below:
 ```JavaScript
 exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -130,14 +129,14 @@ exports.config = {
 };
 ```
 
-#####Lest write first Protractor test case:
-First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
+####Lest write first Protractor test case:
+First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
     
 **spec.js:**
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -146,14 +145,16 @@ First of all, we need to open our **application** in the browser, which we can d
     });
 })();
 ```
-Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.
-   
+
+Test Case 1. Let's check if the title of the page is `Credit Card` or not. I had mentioned above that **Protractor** also uses **Jasmine** and we know that **Jasmine** lets us describe our test case in a simple plain text. Therefore our test would look something like this, easy to understand.   
 ```JavaScript
 it('should have correct title', function () {
     expect(browser.getTitle()).toEqual('Credit Card');
 });
 ```
-**it** is the **Jasmine** **function**. **it** takes two parameters
+
+**it** is the **Jasmine** **function**. **it** takes two parameters.
+
 1. **String** - This string is a kind of sentence, that explains what is being tested.
 2. **function** - This is a callback **function**.
 
@@ -165,7 +166,7 @@ So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we a
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -181,12 +182,10 @@ So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we a
 #####How to run test case?
 To run test you will have to do the following:
 
-1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
-    > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
-2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
-    > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
-
-You will see a **Chrome** window opening up . 
+1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**
+> NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
+2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`
+> NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
 That's it. When you will try to run the test cases, you will see your system's default browser will open and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console:
 
@@ -224,14 +223,14 @@ In the previous test we had used only **model** and **id** as the selector, wher
 
 In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
 
-Our expectation is that an error message should appear. We are using the binding's name and getting text from it and checking if it is equal to the expected text.
+Our expectation is that an error message should appear. We are using the **binding** selector and getting text from it and checking if it is equal to the expected text.
 
 Here is the complete `spec.js` file:
 **spec.js**
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -271,6 +270,8 @@ Here is the complete `spec.js` file:
 })();
 ```
 
+> You can run all the test cases, and all should be passed.
+
 Well, these were a few test cases on the simple **functionality** that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
 1. by.css
@@ -279,5 +280,3 @@ Well, these were a few test cases on the simple **functionality** that we had bu
 4. by.binding
 
 In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper **functions**:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
-
-Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from [Github Repo](https://github.com/NamitaMalik/E2E-testing-with-Protractor).
