@@ -136,7 +136,7 @@ First of all, we need to open our **application** in the browser, which we can d
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -166,7 +166,7 @@ So we **expect** our page **title** to be(to be equal to) `Credit Card`. So we a
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -223,14 +223,14 @@ In the previous test we had used only **model** and **id** as the selector, wher
 
 In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.
 
-Our expectation is that an error message should appear. We are using the binding's name and getting text from it and checking if it is equal to the expected text.
+Our expectation is that an error message should appear. We are using the **binding** selector and getting text from it and checking if it is equal to the expected text.
 
 Here is the complete `spec.js` file:
 **spec.js**
 ```JavaScript
 (function () {
     function openApplicationInBrowser() {
-        browser.get("http://localhost:8080/E2E-testing-with-Protractor/creditCard.html");
+        browser.get("http://localhost:8080/creditCard.html");
     }
     describe('Saving Credit Card Number', function () {
         beforeEach(function () {
@@ -270,6 +270,8 @@ Here is the complete `spec.js` file:
 })();
 ```
 
+> You can run all the test cases, and all should be passed.
+
 Well, these were a few test cases on the simple **functionality** that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with **Protractor**:
 
 1. by.css
@@ -278,5 +280,3 @@ Well, these were a few test cases on the simple **functionality** that we had bu
 4. by.binding
 
 In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper **functions**:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
-
-Well, now we can now test our **application** using **Protractor**, meanwhile you can also checkout full working source code from [Github Repo](https://github.com/NamitaMalik/E2E-testing-with-Protractor).
