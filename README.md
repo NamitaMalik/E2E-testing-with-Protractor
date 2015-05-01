@@ -184,6 +184,7 @@ To run test you will have to do the following:
 
 1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
 > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
+
 2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
 > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
