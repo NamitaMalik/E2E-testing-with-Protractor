@@ -130,7 +130,7 @@ exports.config = {
 ```
 
 ####Lest write first Protractor test case:
-First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
+First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
     
 **spec.js:**
 ```JavaScript
@@ -153,7 +153,8 @@ it('should have correct title', function () {
 });
 ```
 
-**it** is the **Jasmine** **function**. **it** takes two parameters
+**it** is the **Jasmine** **function**. **it** takes two parameters.
+
 1. **String** - This string is a kind of sentence, that explains what is being tested.
 2. **function** - This is a callback **function**.
 
