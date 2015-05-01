@@ -182,9 +182,12 @@ We **expect** our page **title** to be(to be equal to) `Credit Card`. So we are 
 #####How to run test case?
 To run test you will have to do the following:
 
-1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**
+1. Go to console and run `webdriver-manager start` command to start **Selenium webdriver manager**.
+
 > NOTE: You don't need to install **Selenium webdriver manager** separately, Its already have installed into your system with **Protractor**.
-2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`
+
+2. Now on the console go the `test` folder and run test case with command `Protractor conf.js`.
+
 > NOTE: **spec.js** file must be saved in test directory, parallel to **conf.js**.
 
 That's it. When you will try to run the test cases, you will see your system's default browser will open and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console:
