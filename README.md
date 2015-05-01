@@ -42,22 +42,19 @@ Here is the **HTML** and **JavaScript** code:
 <body ng-controller="CardController">
 <div>
     <p>Do you have a credit card?</p>
-    <input type="checkbox" id="hasCreditCard" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
+    <input type="checkbox" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
            ng-click="checkClicked()">
     <span>{{data.checkCard}}</span>
 </div>
 <div>
     <p>If yes, please enter your credit card number here:</p>
-    <input type="text" name="myField" id="hasCard" ng-disabled="data.checkCard != 'Yes'" ng-model="data.cardNumber"
+    <input type="text" name="myField" ng-disabled="data.checkCard != 'Yes'" ng-model="data.cardNumber"
            minlength="16" maxlength="16">
     <input type="button" value="Save" id="save" ng-disabled="data.checkCard != 'Yes'" ng-click="save();">
 </div>
 </br>
-<div class="error" ng-if="!successMessage">
-    {{errorMessage}}
-</div>
-<div class="success" ng-if="!errorMessage">
-    {{successMessage}}
+<div ng-class="{error: errorMessage, success: successMessage}">
+    {{errorMessage}} {{successMessage}}
 </div>
 <script src="src/js/angular.min.js"></script>
 <script src="src/js/appController.js"></script>
@@ -94,20 +91,22 @@ Here is the **HTML** and **JavaScript** code:
 
 Let's manually test if our application is working fine or not. Do follow these steps:
 
-1. Install http-server module globally with npm install ```http-server -g``` command.
-2. Run http-server command.
-3. Open http://localhost:8080/E2E-testing-with-Protractor/creditCard.html in your favorite browser and check if application is running.
+1. Install **http-server** module globally with ```npm installhttp-server -g``` command.
+2. Clone the project with `git clone git@github.com:NamitaMalik/E2E-testing-with-Protractor.git` command.
+3. Move to clone directory with `cd E2E-testing-with-Protractor` command.
+4. Run **http-server** with `hs` command.
+5. Open **http://localhost:8080/creditCard.html** URL in your favorite browser and check that application is working as expected or not.
 
-(Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above js and html files) folder, but to run our test cases it would be helpful if we run it through localhost.)
+> Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above **.js** and **.html** files) folder, but to run our test cases it would be required to run from a server.
 
 ###How to Test with Protractor??
 
-1. Create a **test** named folder in your project directory.
-2. Now create `conf.js` named **configuration** file for our test cases and save it in test directory. We define two things in it:
+1. Create a **test** named folder in your project directory(E2E-testing-with-Protractor).
+2. Now create `conf.js` named **configuration** file for our test cases and save it in **test** directory. We define two things in it:
     1. **seleniumAddress**: Address of **Selenium webdriver manager**.
     2. **specs**: Our test case file, which should be run.
 
-Our `conf.js` would look something like this:
+So our `conf.js` would look something like this:
 
 **conf.js**
 ```JavaScript
@@ -116,8 +115,8 @@ exports.config = {
     specs: ['spec.js']
 };
 ```
-By default your tests will run on **chrome** only, but in case you want to run your test cases on both chrome and firefox, you can add an additional property named as **multiCapabilities** in your **conf.js** as given below:
 
+By default your tests will run on default browser only, but in case you want to run your test cases on specific browser or in multiple browsers e.g. **chrome** and **safari**, you can add an additional property named as **multiCapabilities** in your **conf.js** as given below:
 ```JavaScript
 exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -130,7 +129,7 @@ exports.config = {
 };
 ```
 
-#####Lest write first Protractor test case:
+####Lest write first Protractor test case:
 First of all, we need to open our **application** in the browser, which we can do by: `browser.get("http://localhost:63342/E2E-testing-with-Protractor/creditCard.html");`. So before running any test case, our **application** must be open in the browser so we have kept this in a ```beforeEach()``` block e.g.
     
 **spec.js:**
