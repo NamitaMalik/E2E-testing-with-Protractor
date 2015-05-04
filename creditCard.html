@@ -10,7 +10,7 @@
     <p>Do you have a credit card?</p>
     <input type="checkbox" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="data.checkCard"
            ng-click="checkClicked()">
-    <span>{{data.checkCard}}</span>
+    <span>{{data.checkCard || No}}</span>
 </div>
 <div>
     <p>If yes, please enter your credit card number here:</p>
