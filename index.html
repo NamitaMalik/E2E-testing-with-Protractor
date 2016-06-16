@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>E2E Testing with Protractor by NamitaMalik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">E2E Testing with Protractor</h1>
+      <h2 class="project-tagline">This blog discusses how to do e2e testing using Protractor.</h2>
+      <a href="https://github.com/NamitaMalik/E2E-testing-with-Protractor" class="btn">View on GitHub</a>
+      <a href="https://github.com/NamitaMalik/E2E-testing-with-Protractor/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/NamitaMalik/E2E-testing-with-Protractor/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="e2e-testing-with-protractor" class="anchor" href="#e2e-testing-with-protractor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>E2E Testing with Protractor</h1>
+
+<p>We all know that <strong>end to end testing</strong> is done to test the flow of <strong>application</strong>. It can either be done manually or using some kind of <strong>automation</strong> tool/framework.</p>
+
+<p>There are a hell lot of <strong>automation</strong> frameworks available but for <strong>AngularJS</strong>, <strong>Protractor</strong> is being promoted. <strong>Protractor</strong> combines powerful tools and technologies such as <strong>NodeJS</strong>, <strong>Selenium Webdriver</strong>, <strong>Jasmine</strong>, <strong>Mocha</strong> and <strong>Cucumber</strong>.</p>
+
+<blockquote>
+<p>NOTE: <strong>Protractor</strong> was designed for <strong>e2e testing</strong> in order to cover the <strong>acceptance criteria</strong>. It does not replace the <strong>unit testing</strong> frameworks such as <strong>Karma</strong>. It is a sort of wrapper above <strong>Selenium</strong>.</p>
+</blockquote>
+
+<p>Now, its time to get our hands dirty with some piece of code, but before that let's have a look at some pre-requisites:</p>
+
+<p>Let's set up <strong>Protractor</strong> on your system(I am assuming that <strong>NodeJS</strong> is already installed)</p>
+
+<ol>
+<li>Install <strong>Protractor</strong> globally using the command  <code>npm install protractor –g</code> or use the command <code>npm install protractor</code> if you want to install it for a particular project.</li>
+<li>To check if you have correctly installed it, use the command <code>protractor --version</code>.</li>
+<li>
+<strong>Protractor</strong> installs <strong>Selenium webdriver manager</strong> with it, update <strong>Selenium webdriver manager</strong> with command <code>webdriver-manager update</code>.</li>
+</ol>
+
+<p>Yes, it's that easy!!</p>
+
+<p>Now, let's have a look at the functionality that we want to test:</p>
+
+<ol>
+<li>There is checkbox, which needs to be checked when user has credit card. On checking the checkbox, "Yes" would be printed on the page and on un-checking it, "No".</li>
+<li>When the checkbox is un-checked state, <code>credit card number</code> input field and <code>Save</code> button would be disabled and on checking it, both fields will be enabled.</li>
+<li>On clicking the <code>Save</code> button error/success message is displayed.</li>
+<li>Error message would be displayed in the following conditions.
+
+<ol>
+<li>When input field is empty.</li>
+<li>When anything except numbers is input in the input field.</li>
+<li>When less than 16 digits are added in the input field.</li>
+</ol>
+</li>
+<li>Success Message would be shown in the following cases.
+
+<ol>
+<li>When a 16-digit number is input in the input field.</li>
+<li>Success message would also include the 16-digit number added in the input field.</li>
+</ol>
+</li>
+</ol>
+
+<p>Here is the <strong>HTML</strong> and <strong>JavaScript</strong> code:</p>
+
+<p><strong>creditCard.html</strong></p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;!DOCTYPE html&gt;
+&lt;<span class="pl-ent">html</span> <span class="pl-e">ng-app</span>=<span class="pl-s"><span class="pl-pds">"</span>creditCardApp<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">head</span> <span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">charset</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">title</span>&gt;Credit Card&lt;/<span class="pl-ent">title</span>&gt;
+    &lt;<span class="pl-ent">link</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>src/css/appStyle.css<span class="pl-pds">"</span></span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">head</span>&gt;
+&lt;<span class="pl-ent">body</span> <span class="pl-e">ng-controller</span>=<span class="pl-s"><span class="pl-pds">"</span>CardController<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">p</span>&gt;Do you have a credit card?&lt;/<span class="pl-ent">p</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>checkbox<span class="pl-pds">"</span></span> <span class="pl-e">ng-true-value</span>=<span class="pl-s"><span class="pl-pds">"</span>'Yes'<span class="pl-pds">"</span></span> <span class="pl-e">ng-false-value</span>=<span class="pl-s"><span class="pl-pds">"</span>'No'<span class="pl-pds">"</span></span> <span class="pl-e">ng-model</span>=<span class="pl-s"><span class="pl-pds">"</span>data.checkCard<span class="pl-pds">"</span></span>
+           <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>checkClicked()<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">span</span>&gt;{{data.checkCard}}&lt;/<span class="pl-ent">span</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;
+&lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">p</span>&gt;If yes, please enter your credit card number here:&lt;/<span class="pl-ent">p</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>myField<span class="pl-pds">"</span></span> <span class="pl-e">ng-disabled</span>=<span class="pl-s"><span class="pl-pds">"</span>data.checkCard != 'Yes'<span class="pl-pds">"</span></span> <span class="pl-e">ng-model</span>=<span class="pl-s"><span class="pl-pds">"</span>data.cardNumber<span class="pl-pds">"</span></span>
+           <span class="pl-e">minlength</span>=<span class="pl-s"><span class="pl-pds">"</span>16<span class="pl-pds">"</span></span> <span class="pl-e">maxlength</span>=<span class="pl-s"><span class="pl-pds">"</span>16<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>button<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s"><span class="pl-pds">"</span>Save<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>save<span class="pl-pds">"</span></span> <span class="pl-e">ng-disabled</span>=<span class="pl-s"><span class="pl-pds">"</span>data.checkCard != 'Yes'<span class="pl-pds">"</span></span> <span class="pl-e">ng-click</span>=<span class="pl-s"><span class="pl-pds">"</span>save();<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">br</span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">ng-class</span>=<span class="pl-s"><span class="pl-pds">"</span>{error: errorMessage, success: successMessage}<span class="pl-pds">"</span></span>&gt;
+    {{errorMessage}} {{successMessage}}
+&lt;/<span class="pl-ent">div</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>src/js/angular.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>src/js/appController.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<p><strong>appController.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre>(<span class="pl-k">function</span> (<span class="pl-smi">ng</span>) {
+    <span class="pl-k">var</span> creditCardApp <span class="pl-k">=</span> <span class="pl-smi">ng</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>creditCardApp<span class="pl-pds">'</span></span>, []);
+    <span class="pl-smi">creditCardApp</span>.<span class="pl-en">controller</span>(<span class="pl-s"><span class="pl-pds">'</span>CardController<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>$scope<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>) {
+        <span class="pl-smi">$scope</span>.<span class="pl-c1">data</span> <span class="pl-k">=</span> {checkCard<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, cardNumber<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>};
+        <span class="pl-smi">$scope</span>.<span class="pl-en">save</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+            <span class="pl-smi">$scope</span>.<span class="pl-smi">successMessage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+            <span class="pl-smi">$scope</span>.<span class="pl-smi">errorMessage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+            <span class="pl-k">if</span> (<span class="pl-k">!</span><span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">cardNumber</span>) {
+                <span class="pl-smi">$scope</span>.<span class="pl-smi">errorMessage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Please enter a valid credit card number<span class="pl-pds">"</span></span>;
+            } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-c1">isNaN</span>(<span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">cardNumber</span>)) {
+                <span class="pl-smi">$scope</span>.<span class="pl-smi">errorMessage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Credit card number can have only Numbers(0-9)<span class="pl-pds">"</span></span>;
+            } <span class="pl-k">else</span> {
+                <span class="pl-smi">$scope</span>.<span class="pl-smi">successMessage</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Your credit card number <span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">cardNumber</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> has been saved with us.<span class="pl-pds">"</span></span>;
+                <span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">cardNumber</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+            }
+        };
+        <span class="pl-smi">$scope</span>.<span class="pl-en">checkClicked</span> <span class="pl-k">=</span> <span class="pl-k">function</span> () {
+            <span class="pl-k">if</span> (<span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">checkCard</span> <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">"</span>No<span class="pl-pds">"</span></span>) {
+                <span class="pl-smi">$scope</span>.<span class="pl-c1">data</span>.<span class="pl-smi">cardNumber</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+            }
+        };
+    }]);
+})(angular);</pre></div>
+
+<p>Let's manually test if our application is working fine or not. Do follow these steps:</p>
+
+<ol>
+<li>Install <strong>http-server</strong> module globally with <code>npm installhttp-server -g</code> command.</li>
+<li>Clone the project with <code>git clone git@github.com:NamitaMalik/E2E-testing-with-Protractor.git</code> command.</li>
+<li>Move to clone directory with <code>cd E2E-testing-with-Protractor</code> command.</li>
+<li>Run <strong>http-server</strong> with <code>hs</code> command.</li>
+<li>Open <strong>http://localhost:8080/creditCard.html</strong> URL in your favorite browser and check that application is working as expected or not.</li>
+</ol>
+
+<blockquote>
+<p>Note: You can obviously run the application by opening creditCard.html simply from the E2E-testing-with-Protractor(or where you have kept above <strong>.js</strong> and <strong>.html</strong> files) folder, but to run our test cases it would be required to run from a server.</p>
+</blockquote>
+
+<h3>
+<a id="how-to-test-with-protractor" class="anchor" href="#how-to-test-with-protractor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to Test with Protractor??</h3>
+
+<ol>
+<li>Create a <strong>test</strong> named folder in your project directory(E2E-testing-with-Protractor).</li>
+<li>Now create <code>conf.js</code> named <strong>configuration</strong> file for our test cases and save it in <strong>test</strong> directory. We define two things in it:
+
+<ol>
+<li>
+<strong>seleniumAddress</strong>: Address of <strong>Selenium webdriver manager</strong>.</li>
+<li>
+<strong>specs</strong>: Our test case file, which should be run.</li>
+</ol>
+</li>
+</ol>
+
+<p>So our <code>conf.js</code> would look something like this:</p>
+
+<p><strong>conf.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c1">exports</span>.<span class="pl-smi">config</span> <span class="pl-k">=</span> {
+    seleniumAddress<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>http://localhost:4444/wd/hub<span class="pl-pds">'</span></span>,
+    specs<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>spec.js<span class="pl-pds">'</span></span>]
+};</pre></div>
+
+<p>By default your tests will run on default browser only, but in case you want to run your test cases on specific browser or in multiple browsers e.g. <strong>chrome</strong> and <strong>safari</strong>, you can add an additional property named as <strong>multiCapabilities</strong> in your <strong>conf.js</strong> as given below:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c1">exports</span>.<span class="pl-smi">config</span> <span class="pl-k">=</span> {
+    seleniumAddress<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>http://localhost:4444/wd/hub<span class="pl-pds">'</span></span>,
+    specs<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>spec.js<span class="pl-pds">'</span></span>],
+    multiCapabilities<span class="pl-k">:</span> [{
+        browserName<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>firefox<span class="pl-pds">'</span></span>
+    }, {
+        browserName<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>chrome<span class="pl-pds">'</span></span>
+    }]
+};</pre></div>
+
+<h4>
+<a id="lest-write-first-protractor-test-case" class="anchor" href="#lest-write-first-protractor-test-case" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lest write first Protractor test case:</h4>
+
+<p>First of all, we need to open our <strong>application</strong> in the browser, which we can do by: <code>browser.get("http://localhost:63342/creditCard.html");</code>. So before running any test case, our <strong>application</strong> must be open in the browser so we have kept this in a <code>beforeEach()</code> block e.g.</p>
+
+<p><strong>spec.js:</strong></p>
+
+<div class="highlight highlight-source-js"><pre>(<span class="pl-k">function</span> () {
+    <span class="pl-k">function</span> <span class="pl-en">openApplicationInBrowser</span>() {
+        <span class="pl-smi">browser</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/creditCard.html<span class="pl-pds">"</span></span>);
+    }
+    <span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>Saving Credit Card Number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+        <span class="pl-en">beforeEach</span>(<span class="pl-k">function</span> () {
+            <span class="pl-en">openApplicationInBrowser</span>();
+        });
+    });
+})();</pre></div>
+
+<p>Test Case 1. Let's check if the title of the page is <code>Credit Card</code> or not. I had mentioned above that <strong>Protractor</strong> also uses <strong>Jasmine</strong> and we know that <strong>Jasmine</strong> lets us describe our test case in a simple plain text. Therefore our test would look something like this:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>should have correct title<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">expect</span>(<span class="pl-smi">browser</span>.<span class="pl-en">getTitle</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">'</span>Credit Card<span class="pl-pds">'</span></span>);
+});</pre></div>
+
+<p><strong>it</strong> is the <strong>Jasmine</strong> <strong>function</strong>. <strong>it</strong> takes two parameters.</p>
+
+<ol>
+<li>
+<strong>String</strong> - This string is a kind of sentence, that explains what is being tested.</li>
+<li>
+<strong>function</strong> - This is a callback <strong>function</strong>.</li>
+</ol>
+
+<p>We write all the code in the <strong>it</strong> block that we need for <strong>testing</strong>. Usually the tests are started by writing an <strong>expect</strong> <strong>function</strong>.</p>
+
+<p>We <strong>expect</strong> our page <strong>title</strong> to be(to be equal to) <code>Credit Card</code>. So we are first getting the title using <code>getTitle()</code> <strong>function</strong> and then comparing with the expected title using the <code>toEqual</code> <strong>function</strong>.</p>
+
+<p><strong>Resultant spec.js:</strong></p>
+
+<div class="highlight highlight-source-js"><pre>(<span class="pl-k">function</span> () {
+    <span class="pl-k">function</span> <span class="pl-en">openApplicationInBrowser</span>() {
+        <span class="pl-smi">browser</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/creditCard.html<span class="pl-pds">"</span></span>);
+    }
+    <span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>Saving Credit Card Number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+        <span class="pl-en">beforeEach</span>(<span class="pl-k">function</span> () {
+            <span class="pl-en">openApplicationInBrowser</span>();
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>should have correct title<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">expect</span>(<span class="pl-smi">browser</span>.<span class="pl-en">getTitle</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">'</span>Credit Card<span class="pl-pds">'</span></span>);
+        });
+    });
+})();</pre></div>
+
+<h5>
+<a id="how-to-run-test-case" class="anchor" href="#how-to-run-test-case" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to run test case?</h5>
+
+<p>To run test you will have to do the following:</p>
+
+<ol>
+<li>
+<p>Go to console and run <code>webdriver-manager start</code> command to start <strong>Selenium webdriver manager</strong>.</p>
+
+<blockquote>
+<p>NOTE: You don't need to install <strong>Selenium webdriver manager</strong> separately, Its already have installed into your system with <strong>Protractor</strong>.</p>
+</blockquote>
+</li>
+<li>
+<p>Now on the console go the <code>test</code> folder and run test case with command <code>Protractor conf.js</code>.</p>
+
+<blockquote>
+<p>NOTE: <strong>spec.js</strong> file must be saved in test directory, parallel to <strong>conf.js</strong>.</p>
+</blockquote>
+</li>
+</ol>
+
+<p>That's it. When you will try to run the test cases, you will see your system's default browser will open and your tests running on it. Once the tests are completed, the window will close automatically and test results will be available on console:</p>
+
+<p><img src="https://raw.githubusercontent.com/NamitaMalik/E2E-testing-with-Protractor/master/images/result.png" alt="result.png"></p>
+
+<p>I know this doesn't interests you at all in case you already know <strong>Jasmine</strong>.</p>
+
+<p>Now, let's write another test:</p>
+
+<p>Test Case 2 : <code>Card Number</code> input and <code>Save</code> button will be disabled by default.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>checks if the input field is by default disabled<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">isEnabled</span>()).<span class="pl-en">toBe</span>(<span class="pl-c1">false</span>);
+    <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-en">isEnabled</span>()).<span class="pl-en">toBe</span>(<span class="pl-c1">false</span>);
+});</pre></div>
+
+<p>In the above <strong>it</strong> block, we are first getting the element using the <strong>model</strong> selector and then we check if that element is enabled or not, using the <code>isEnabled</code> <strong>function</strong>. <code>isEnabled()</code> <strong>function</strong> returns a boolean value, true if element is enabled and false if it is not.</p>
+
+<p>In our case, this boolean value should be false as checkbox is un-checked.</p>
+
+<p>Test Case 3 : Error message should appear on entering an invalid credit card number.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>gives an error message on writing invalid credit card number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.checkCard<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+    <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">"</span>abcdefghijkikiki<span class="pl-pds">"</span></span>);
+    <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+    <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">binding</span>(<span class="pl-s"><span class="pl-pds">'</span>errorMessage<span class="pl-pds">'</span></span>)).<span class="pl-en">getText</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">"</span>Credit card number can have only Numbers(0-9)<span class="pl-pds">"</span></span>);
+});</pre></div>
+
+<p>In the previous test we had used only <strong>model</strong> and <strong>id</strong> as the selector, whereas in the above test case we are using a new selector i.e. <strong>binding</strong>.</p>
+
+<p>In the above script, we are first checking the checkbox, then entering an invalid text in the input field and then finally save button is clicked.</p>
+
+<p>Our expectation is that an error message should appear. We are using the <strong>binding</strong> selector and getting text from it and checking if it is equal to the expected text.</p>
+
+<p>Here is the complete <code>spec.js</code> file:
+<strong>spec.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre>(<span class="pl-k">function</span> () {
+    <span class="pl-k">function</span> <span class="pl-en">openApplicationInBrowser</span>() {
+        <span class="pl-smi">browser</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/creditCard.html<span class="pl-pds">"</span></span>);
+    }
+    <span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>Saving Credit Card Number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+        <span class="pl-en">beforeEach</span>(<span class="pl-k">function</span> () {
+            <span class="pl-en">openApplicationInBrowser</span>();
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>should have correct title<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">expect</span>(<span class="pl-smi">browser</span>.<span class="pl-en">getTitle</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">'</span>Credit Card<span class="pl-pds">'</span></span>);
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>checks if the input field is by default disabled<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">isEnabled</span>()).<span class="pl-en">toBe</span>(<span class="pl-c1">false</span>);
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-en">isEnabled</span>()).<span class="pl-en">toBe</span>(<span class="pl-c1">false</span>);
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>enables the input field<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.checkCard<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">isEnabled</span>()).<span class="pl-en">toBe</span>(<span class="pl-c1">true</span>);
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>gives an error message on writing invalid credit card number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.checkCard<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">"</span>abcdefghijkikiki<span class="pl-pds">"</span></span>);
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">binding</span>(<span class="pl-s"><span class="pl-pds">'</span>errorMessage<span class="pl-pds">'</span></span>)).<span class="pl-en">getText</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">"</span>Credit card number can have only Numbers(0-9)<span class="pl-pds">"</span></span>);
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>gives a success message on writing a valid credit card number<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-k">var</span> cardNumber <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>1234567899009876<span class="pl-pds">"</span></span>;
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.checkCard<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">sendKeys</span>(cardNumber);
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">binding</span>(<span class="pl-s"><span class="pl-pds">'</span>successMessage<span class="pl-pds">'</span></span>)).<span class="pl-en">getText</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">"</span>Your credit card number <span class="pl-pds">"</span></span> <span class="pl-k">+</span> cardNumber <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> has been saved with us.<span class="pl-pds">"</span></span>);
+        });
+        <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>gives an error message when credit card number entered is less than 16 digits<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.checkCard<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>data.cardNumber<span class="pl-pds">'</span></span>)).<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">"</span>1234567890<span class="pl-pds">"</span></span>);
+            <span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-c1">id</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>)).<span class="pl-c1">click</span>();
+            <span class="pl-en">expect</span>(<span class="pl-en">element</span>(<span class="pl-smi">by</span>.<span class="pl-en">binding</span>(<span class="pl-s"><span class="pl-pds">'</span>errorMessage<span class="pl-pds">'</span></span>)).<span class="pl-en">getText</span>()).<span class="pl-en">toEqual</span>(<span class="pl-s"><span class="pl-pds">"</span>Please enter a valid credit card number<span class="pl-pds">"</span></span>);
+        });
+    });
+})();</pre></div>
+
+<blockquote>
+<p>You can run all the test cases, and all should be passed.</p>
+</blockquote>
+
+<p>Well, these were a few test cases on the simple <strong>functionality</strong> that we had built. We have used three types of selectors above. Here is a list of selectors which can be used while working with <strong>Protractor</strong>:</p>
+
+<ol>
+<li>by.css</li>
+<li>by.id</li>
+<li>by.model</li>
+<li>by.binding</li>
+</ol>
+
+<p>In case you want to play with multiple elements, you can use <code>element.all()</code>. There are certain helper <strong>functions</strong>:<code>count()</code> - which gives the number of elements, <code>getIndex()</code> - to get an element using index.</p>
+
+<h2>
+<a id="follow-me" class="anchor" href="#follow-me" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Follow Me</h2>
+
+<p><a href="https://github.com/NamitaMalik">Github</a></p>
+
+<p><a href="https://twitter.com/namita13_04">Twitter</a></p>
+
+<p><a href="https://in.linkedin.com/in/namita-malik-a7885b23">LinkedIn</a></p>
+
+<p><a href="https://namitamalik.github.io/">More Blogs By Me</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/NamitaMalik/E2E-testing-with-Protractor">E2E Testing with Protractor</a> is maintained by <a href="https://github.com/NamitaMalik">NamitaMalik</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
