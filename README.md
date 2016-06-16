@@ -281,3 +281,13 @@ Well, these were a few test cases on the simple **functionality** that we had bu
 4. by.binding
 
 In case you want to play with multiple elements, you can use ```element.all()```. There are certain helper **functions**:```count()``` - which gives the number of elements, ```getIndex()``` - to get an element using index.
+
+Follow Me
+---
+[Github](https://github.com/NamitaMalik)
+
+[Twitter](https://twitter.com/namita13_04)
+
+[LinkedIn](https://in.linkedin.com/in/namita-malik-a7885b23)
+
+[More Blogs By Me](https://namitamalik.github.io/)
