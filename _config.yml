@@ -1,0 +1,8 @@
+title: E2E Testing with Protractor
+description: This blog discusses how to do e2e testing using Protractor.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-hacker
+
+gems:
+  - jekyll-mentions
